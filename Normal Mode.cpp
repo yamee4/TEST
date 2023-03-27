@@ -2,6 +2,8 @@
 #include"Console.h"
 #include <conio.h>
 #include "CheckMatch1.h"
+#include"Menu.h"
+char bg[20][41];
 void generateElements(char*& temp, int& nRows, int& nCols)
 {
 	temp = new char[nRows * nCols];
@@ -71,8 +73,13 @@ void deleteBoard(CELL1** board, int& rowNumbers, int& columeNumbers)
 		for (int j = 0; j < columeNumbers; j++)
 		{
 			if (board[i][j].isNotEmpty)
+			{
 				board[i][j].deleteBox();
-			//display background (implement later...)
+				if (j < 4)
+				{
+					board[i][j].drawBG();
+				}
+			}
 		}
 	}
 	for (int i = 0; i < rowNumbers; i++)
@@ -139,11 +146,11 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 
 							board[selectedPos[0].y][selectedPos[0].x].isNotEmpty = false;
 							board[selectedPos[0].y][selectedPos[0].x].deleteBox();
-							//if (selectedPos[0].x < 4) displayBackground(bg, selectedPos[0].x, selectedPos[0].y); (implement later...)
+							if (selectedPos[0].x < 4) board[selectedPos[0].y][selectedPos[0].x].drawBG();
 
 							board[selectedPos[1].y][selectedPos[1].x].isNotEmpty = false;
 							board[selectedPos[1].y][selectedPos[1].x].deleteBox();
-							//if (selectedPos[1].x < 4) displayBackground(bg, selectedPos[1].x, selectedPos[1].y);
+							if (selectedPos[1].x < 4) board[selectedPos[1].y][selectedPos[1].x].drawBG();
 						}
 						else
 						{
@@ -198,7 +205,7 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 			}
 		}
 	}
-
+	//Moving around in the console using keyboard
 	else
 	{
 		if ((pos.x != selectedPos[0].x || pos.y != selectedPos[0].y) && (pos.x != selectedPos[1].x || pos.y != selectedPos[1].y)) // check if this box is selected
@@ -206,7 +213,7 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 
 		switch (key=_getch()) 
 		{
-			case KEY_UP:
+			case KEY_UP: //Arrow up
 
 			for (int i = pos.x; i < BOARDWIDTH; i++)
 			{
@@ -261,7 +268,8 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 
 			break;
 
-			case KEY_DOWN:
+			case KEY_DOWN: //Arrow down
+
 				for (int i = pos.x; i < BOARDWIDTH; i++)
 				{
 					for (int j = pos.y + 1; j < BOARDHEIGHT; j++)
@@ -315,7 +323,7 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 				}
 				break;
 
-			case KEY_LEFT:
+			case KEY_LEFT: //Arrow left
 				for (int i = pos.y; i >= 0; i--)
 				{
 					for (int j = pos.x - 1; j >= 0; j--)
@@ -368,7 +376,8 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 				}
 				break;
 
-			case KEY_RIGHT:
+			case KEY_RIGHT: //Arrow right
+
 				for (int i = pos.y; i >= 0; i--)
 				{
 					for (int j = pos.x + 1; j < BOARDWIDTH; j++)
@@ -430,15 +439,18 @@ void initNormalMode(player& p)
 	CELL1** BOARD;
 	int BOARDWIDTH = 4;
 	int BOARDHEIGHT = 4;
-	initializeBoardView(BOARD, BOARDHEIGHT, BOARDWIDTH);
 
-	goToXY(45, 0);
-	cout << "POINT: " << p.point;
+	initializeBoardView(BOARD, BOARDHEIGHT, BOARDWIDTH);
+	
 	position SelectedPos[] = { {-1,-1},{-1,-1} };
 	int pairup = 2;
 	position Cursor = { 0,0 };
 	int status = 0; // 0: Currently playing
 					// 1: The player has quitted the game
+
+	p.point = 0;
+	goToXY(40, 0);
+	cout << "POINT: " << p.point;
 
 	while (true)
 	{

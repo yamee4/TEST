@@ -6,6 +6,14 @@
 #include<iomanip>
 #include<cstdlib>
 #include<ctime>
+
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+#define ESC_KEY 27
+#define ENTER_KEY 97
+
 using namespace std;
 
 struct position {
@@ -14,7 +22,7 @@ struct position {
 
 struct player {
 	string name = "";
-	int point = 0; 
+	int point;
 };
 
 struct CELL1
@@ -25,6 +33,7 @@ struct CELL1
 	bool isSelected = false;
 	void drawBox(int);
 	void deleteBox();
+	void drawBG();
 };
 
 struct CELL2

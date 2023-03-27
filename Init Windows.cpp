@@ -9,6 +9,14 @@ char box[5][12] = {
             {" --------- "}
 };
 
+char bg[5][12] = {
+    {"  /)---(\\  "},
+    {" (/ . . \\) "},
+    {" -\\(*)/    "},
+    {"\\_       (_"},
+    {"(__/-(___)"},
+};
+
 void CELL1::drawBox(int color)
 {
     if (!isNotEmpty)
@@ -37,6 +45,16 @@ void CELL1::drawBox(int color)
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), letter % 6 + 1);
         cout << letter;
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+    }
+}
+
+void CELL1::drawBG()
+{
+    int x = j + 1, y = i + 1;
+
+    for (int i = 0; i < 5; i++) {
+        goToXY(x * 10, y * 4 + i);
+        cout << bg[i];
     }
 }
 
