@@ -9,22 +9,22 @@ int Menu()
 {
     int keybind, key, curChoice = 0;
     int choice[4] = { 0,0,0,0 };
-    goToXY(35, 3);
+    goToXY(50, 3);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
     cout << ".______    __   __  ___      ___       ______  __    __   __    __ ";
-    goToXY(35, 4);
+    goToXY(50, 4);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
     cout << "|   _  \\  |  | |  |/  /     /   \\     /      ||  |  |  | |  |  |  |";
-    goToXY(35, 5);
+    goToXY(50, 5);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
     cout << "|  |_)  | |  | |  '  /     /  ^  \\   |  ,----'|  |__|  | |  |  |  |";
-    goToXY(35, 6);
+    goToXY(50, 6);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
     cout << "|   ___/  |  | |    <     /  /_\\  \\  |  |     |   __   | |  |  |  |";
-    goToXY(35, 7);
+    goToXY(50, 7);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
     cout << "|  |      |  | |  .  \\   /  _____  \\ |  `----.|  |  |  | |  `--'  |";
-    goToXY(35, 8);
+    goToXY(50, 8);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
     cout << "| _|      |__| |__|\\__\\ /__/     \\__\\ \\______||__|  |__|  \\______/";
     while (true)
@@ -183,4 +183,45 @@ void displayBackground(char bg[][41], int x, int y)
         }
     }
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+}
+
+void resultScreen(int& status)
+{
+    if (status == 1) {
+
+        goToXY(50, 10);
+        cout << " __   __  _______  __   __    ___      _______  _______  _______ ";
+        goToXY(50, 11);
+        cout << "|  | |  ||       ||  | |  |  |   |    |       ||       ||       |";
+        goToXY(50, 12);
+        cout << "|  |_|  ||   _   ||  | |  |  |   |    |   _   ||  _____||    ___|";
+        goToXY(50, 13);
+        cout << "|       ||  | |  ||  |_|  |  |   |    |  | |  || |_____ |   |___ ";
+        goToXY(50, 14);
+        cout << "|_     _||  |_|  ||       |  |   |___ |  |_|  ||_____  ||    ___|";
+        goToXY(50, 15);
+        cout << "  |   |  |       ||       |  |       ||       | _____| ||   |___ ";
+        goToXY(50, 16);
+        cout << "  |___|  |_______||_______|  |_______||_______||_______||_______|";
+    }
+    else
+    {
+        goToXY(50, 10);
+        cout << " __   __  _______  __   __    _     _  ___   __    _ ";
+        goToXY(50, 11);
+        cout << "|  | |  ||       ||  | |  |  | | _ | ||   | |  |  | |";
+        goToXY(50, 12);
+        cout << "|  |_|  ||   _   ||  | |  |  | || || ||   | |   |_| |";
+        goToXY(50, 13);
+        cout << "|       ||  | |  ||  |_|  |  |       ||   | |       | ";
+        goToXY(50, 14);
+        cout << "|_     _||  |_|  ||       |  |       ||   | |  _    |";
+        goToXY(50, 15);
+        cout << "  |   |  |       ||       |  |   _   ||   | | | |   | ";
+        goToXY(50, 16);
+        cout << "  |___|  |_______||_______|  |__| |__||___| |_|  |__|";
+    }
+
+
+
 }

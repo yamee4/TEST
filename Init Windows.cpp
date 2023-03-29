@@ -58,6 +58,21 @@ void CELL1::drawBG()
     }
 }
 
+void CELL1::highlightMove(int color)
+{
+    int x = j + 1, y = i + 1;
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color + (letter % 6 + 1)); // white background
+    for (int i = 1; i < 4; i++) {
+        goToXY(x * 10 + 1, y * 4 + i);
+        cout << "         ";
+    }
+
+    goToXY(x * 10 + 5, y * 4 + 2);
+    cout << letter;
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+}
+
 void CELL2::drawBox(int color)
 {
     int x = j + 1, y = i + 1;

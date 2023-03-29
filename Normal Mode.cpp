@@ -75,7 +75,7 @@ void deleteBoard(CELL1** board, int& rowNumbers, int& columeNumbers)
 			if (board[i][j].isNotEmpty)
 			{
 				board[i][j].deleteBox();
-				if (j < 4)
+				if (j < rowNumbers)
 				{
 					board[i][j].drawBG();
 				}
@@ -96,6 +96,19 @@ void displayBoard(CELL1** board, int& rowNumbers, int& columeNumbers)
 		for (int j = 0; j < columeNumbers; j++)
 		{
 			board[i][j].drawBox(112);
+			
+		}
+	}
+}
+
+void renderBoard(CELL1** board, int& rowNumbers, int& columeNumbers)
+{
+	for (int i = 0; i < rowNumbers; i++)
+	{
+		for (int j = 0; j < columeNumbers; j++)
+		{
+			board[i][j].drawBox(112);
+			Sleep(200);
 		}
 	}
 }
@@ -103,6 +116,7 @@ void displayBoard(CELL1** board, int& rowNumbers, int& columeNumbers)
 void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, int& pairup, position& pos, player& p, position selectedPos[])
 {
 	int keybind, key;
+	position a, b;
 	keybind = _getch();
 	if (keybind && keybind != 224) // Not an arrow key
 	{
@@ -110,7 +124,15 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 		{ 
 			status = 1; // You quit the game, back to main menu
 		}
-
+		else if (keybind==HELP_KEY)
+		{
+			if (moveSuggestion(board, BOARDHEIGHT, BOARDWIDTH, a, b))
+			{
+				board[a.x][a.y].highlightMove(30);
+				board[b.x][b.y].highlightMove(30);
+				Sleep(550);
+			}
+		}
 		else if (keybind == ENTER_KEY)
 		{
 			if (pos.x == selectedPos[0].x && pos.y == selectedPos[0].y)
@@ -146,11 +168,11 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 
 							board[selectedPos[0].y][selectedPos[0].x].isNotEmpty = false;
 							board[selectedPos[0].y][selectedPos[0].x].deleteBox();
-							if (selectedPos[0].x < 4) board[selectedPos[0].y][selectedPos[0].x].drawBG();
+							if (selectedPos[0].x < BOARDHEIGHT - 1 || selectedPos[0].x < 4) board[selectedPos[0].y][selectedPos[0].x].drawBG();
 
 							board[selectedPos[1].y][selectedPos[1].x].isNotEmpty = false;
 							board[selectedPos[1].y][selectedPos[1].x].deleteBox();
-							if (selectedPos[1].x < 4) board[selectedPos[1].y][selectedPos[1].x].drawBG();
+							if (selectedPos[1].x < BOARDHEIGHT - 1 || selectedPos[1].x < 4) board[selectedPos[1].y][selectedPos[1].x].drawBG();
 						}
 						else
 						{
@@ -402,7 +424,7 @@ void moveInBoard(CELL1** board, int& BOARDHEIGHT, int& BOARDWIDTH, int& status, 
 					}
 				}
 
-				for (int i = pos.y + 1; i >= 0; i--)
+				for (int i = pos.y; i >= 0; i--)
 				{
 					for (int j = 0; j < pos.x; j++)
 					{
@@ -439,11 +461,11 @@ void initNormalMode(player& p)
 	CELL1** BOARD;
 	int BOARDWIDTH = 4;
 	int BOARDHEIGHT = 4;
-
 	initializeBoardView(BOARD, BOARDHEIGHT, BOARDWIDTH);
 	
 	position SelectedPos[] = { {-1,-1},{-1,-1} };
 	int pairup = 2;
+	int time = 0;
 	position Cursor = { 0,0 };
 	int status = 0; // 0: Currently playing
 					// 1: The player has quitted the game
@@ -455,7 +477,14 @@ void initNormalMode(player& p)
 	while (true)
 	{
 		BOARD[Cursor.y][Cursor.x].isSelected = true;
+
+		if (time == 0) {
+			renderBoard(BOARD, BOARDHEIGHT, BOARDWIDTH);
+			time++;
+		}
+
 		displayBoard(BOARD, BOARDHEIGHT, BOARDWIDTH);
+
 		moveInBoard(BOARD, BOARDHEIGHT, BOARDWIDTH, status, pairup, Cursor, p, SelectedPos);
 
 		if (!checkValidPairs(BOARD, BOARDHEIGHT, BOARDWIDTH))
@@ -463,10 +492,11 @@ void initNormalMode(player& p)
 
 		else if (status == 1) //Player has quitted the game, back to main menu
 			break;
+		
 	}
 
 	displayBoard(BOARD, BOARDHEIGHT, BOARDWIDTH);
 	deleteBoard(BOARD, BOARDHEIGHT, BOARDWIDTH);
-	Sleep(500);
-	system("pause");
+	Sleep(1000);
+	system("cls");
 }

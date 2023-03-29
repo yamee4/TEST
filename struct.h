@@ -13,6 +13,7 @@
 #define KEY_RIGHT 77
 #define ESC_KEY 27
 #define ENTER_KEY 97
+#define HELP_KEY 98
 
 using namespace std;
 
@@ -34,6 +35,7 @@ struct CELL1
 	void drawBox(int);
 	void deleteBox();
 	void drawBG();
+	void highlightMove(int);
 };
 
 struct CELL2
@@ -44,4 +46,10 @@ struct CELL2
 	CELL2* pNext;
 	void drawBox(int);
 	void deleteBox();
+};
+
+struct Node
+{
+	char path;
+	Node* next;
 };

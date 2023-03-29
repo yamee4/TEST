@@ -44,7 +44,7 @@ void resizeWindow(int x, int y)
 void initWindow(int length, int width)
 {
 	resizeWindow(width, length);
-	setCursorToConsole(0, 0);
+	setCursorToConsole(false, 0);
 }
 
 

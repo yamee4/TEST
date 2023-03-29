@@ -1,4 +1,5 @@
 #include"struct.h"
+#include"Console.h"
 
 bool isThisLineEmpty(CELL1** board, int x1, int y1, int x2, int y2)
 {
@@ -205,7 +206,7 @@ bool Ucheck(CELL1** board, int x1, int y1, int x2, int y2, int& BOARDHEIGTH, int
         return true;
     }
 
-    bool c1, c2;
+    bool c1, c2, c3;
     int x, y;
     if (y2 < y1) {
         x = y2;
@@ -217,9 +218,13 @@ bool Ucheck(CELL1** board, int x1, int y1, int x2, int y2, int& BOARDHEIGTH, int
     }
     for (int i = 0; i < BOARDWIDTH; i++) {
         if (i <= x || i >= y) {
-            if (!board[i][y1].isNotEmpty) {
-                if (is_L_Matching(board, i, y1, x2, y2))
+            c3 = isThisLineEmpty(board, x1, i, x2, i);
+            if (c3) {
+                c1 = isThisLineEmpty(board, x1, y1, x1, i);
+                c2 = isThisLineEmpty(board, x2, y2, x2, i);
+                if (c1 && c2) {
                     return true;
+                }
             }
             else if (i == 0 || i == (BOARDWIDTH - 1)) {
                 c1 = isThisLineEmpty(board, x1, y1, x1, i);
@@ -231,6 +236,7 @@ bool Ucheck(CELL1** board, int x1, int y1, int x2, int y2, int& BOARDHEIGTH, int
         }
     }
 
+
     if (x2 < x1) {
         x = x2;
         y = x1;
@@ -241,17 +247,21 @@ bool Ucheck(CELL1** board, int x1, int y1, int x2, int y2, int& BOARDHEIGTH, int
     }
     for (int i = 0; i < BOARDHEIGTH; i++) {
         if (i <= x || i >= y) {
-            if (!board[x1][i].isNotEmpty) {
-                if (is_L_Matching(board,x1,i,x2,y2)) 
-                {
-                    return true;
+            if (i <= x || i >= y) {
+                c3 = isThisLineEmpty(board, i, y1, i, y2);
+                if (c3) {
+                    c1 = isThisLineEmpty(board, x1, y1, i, y1);
+                    c2 = isThisLineEmpty(board, x2, y2, i, y2);
+                    if (c1 && c2) {
+                        return true;
+                    }
                 }
-            }
-            else if (i == 0 || i == (BOARDHEIGTH - 1)) {
-                c1 = isThisLineEmpty(board, x1, y1, i, y1);
-                c2 = isThisLineEmpty(board, x2, y2, i, y2);
-                if ((c1 && c2) || (c1 && x2 == i) || (x1 == i && c2)) {
-                    return true;
+                else if (i == 0 || i == (BOARDHEIGTH - 1)) {
+                    c1 = isThisLineEmpty(board, x1, y1, i, y1);
+                    c2 = isThisLineEmpty(board, x2, y2, i, y2);
+                    if ((c1 && c2) || (c1 && x2 == i) || (x1 == i && c2)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -303,38 +313,38 @@ bool checkValidPairs(CELL1** board, int& BOARDHEIGTH, int& BOARDWIDTH) {
     return false;
 }
 
-bool moveSuggestion (CELL1**board, int BOARDHEIGHT, int BOARDWIDTH)
+bool moveSuggestion (CELL1**board, int BOARDHEIGHT, int BOARDWIDTH, position& a, position& b) //reference by Nguyen Thanh Tuan Kiet and VPN
 {
-    int* tmp = new int[BOARDHEIGHT * BOARDWIDTH];
-    int cnt = 0;
-    int pos = 0;
-    for (int i = 0; i < BOARDHEIGHT; i++)
+    for (int i = 0; i < BOARDHEIGHT - 1; i++)
     {
-        for (int j = 0; j < BOARDWIDTH; j++)
+        a.x = i;
+        for (int j = 0; j < BOARDWIDTH - 1; j++)
         {
-            if (board[i][j].isNotEmpty)
+            a.y = j;
+            if (board[a.x][a.y].isNotEmpty) //Check if at the position a, are there any letter
             {
-                tmp[cnt++] = i;
-                tmp[cnt++] = j;
-            }
-        }
-    }
-
-    for (int i = 0; i < BOARDHEIGHT; i++)
-    {
-        for (int j = 0; j < BOARDWIDTH; j++)
-        {
-            if (board[i][j].isNotEmpty && tmp[pos]!=i && tmp[pos+1]!=j)
-            {
-                if (allcheck(board, tmp[pos], tmp[pos + 1], i, j, BOARDHEIGHT, BOARDWIDTH))
+                for (int k = 0; k < BOARDHEIGHT; k++)
                 {
-                    delete[]tmp;
-                    return true;
+                    b.x = k;
+                    for (int l = 1; l < BOARDWIDTH; l++)
+                    {
+                        b.y = l;
+                        if (a.x != b.x || a.y != b.y) {
+
+                            if (board[a.x][a.y].letter == board[b.x][b.y].letter)
+
+                            {
+                                if (allcheck(board, a.x, a.y, b.x, b.y, BOARDHEIGHT, BOARDWIDTH))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-        pos += 2;
     }
-
+    return false;
 
 }
